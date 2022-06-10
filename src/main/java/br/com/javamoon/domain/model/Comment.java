@@ -89,4 +89,11 @@ public class Comment {
 		Comment other = (Comment) obj;
 		return Objects.equals(id, other.id);
 	}
+
+
+	@Override
+	public String toString() {
+		return "Comment [id=" + id + ", message=" + message + ", createdAt=" + createdAt + ", createdBy=" + createdBy
+				+ ", ticket=" + ticket + "]";
+	}
 }

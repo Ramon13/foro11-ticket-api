@@ -49,7 +49,7 @@ public class TicketController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Ticket add(@RequestBody Ticket ticket) {
-		System.out.println(ticket.getTitle());
+		System.out.println(ticket);
 		return null;
 		//return ticketRegisterService.save(ticket);
 	}

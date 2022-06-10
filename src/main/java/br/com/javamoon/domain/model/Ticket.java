@@ -132,4 +132,12 @@ public class Ticket {
 		Ticket other = (Ticket) obj;
 		return Objects.equals(id, other.id);
 	}
+
+
+	@Override
+	public String toString() {
+		return "Ticket [id=" + id + ", title=" + title + ", createdAt=" + createdAt + ", status=" + status
+				+ ", priority=" + priority + ", createdBy=" + createdBy + ", comments=" + comments + ", tags=" + tags
+				+ "]";
+	}
 }

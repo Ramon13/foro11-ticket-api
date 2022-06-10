@@ -22,4 +22,9 @@ public class TicketPriority {
 	public String getDescription() {
 		return TicketPriorityDescription.fromCharacter(name).getDescription();
 	}
+
+	@Override
+	public String toString() {
+		return "TicketPriority [name=" + name + "]";
+	}
 }
