@@ -93,7 +93,6 @@ public class Comment {
 
 	@Override
 	public String toString() {
-		return "Comment [id=" + id + ", message=" + message + ", createdAt=" + createdAt + ", createdBy=" + createdBy
-				+ ", ticket=" + ticket + "]";
+		return "Comment [id=" + id + ", message=" + message + ", createdAt=" + createdAt + ", createdBy=" + createdBy + "]";
 	}
 }

@@ -49,8 +49,6 @@ public class TicketController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Ticket add(@RequestBody Ticket ticket) {
-		System.out.println(ticket);
-		return null;
-		//return ticketRegisterService.save(ticket);
+		return ticketRegisterService.save(ticket);
 	}
 }

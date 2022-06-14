@@ -15,6 +15,10 @@ public enum TicketStatusDescription {
 		return description;
 	}
 	
+	public Character getStatus() {
+		return this.toString().charAt(0);
+	}
+	
 	public static TicketStatusDescription fromCharacter(Character status) {
 		return TicketStatusDescription.valueOf( status.toString() );
 	}
