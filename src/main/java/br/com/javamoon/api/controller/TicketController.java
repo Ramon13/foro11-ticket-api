@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.com.javamoon.domain.model.Ticket;
 import br.com.javamoon.domain.repository.TicketRepository;
@@ -36,14 +37,10 @@ public class TicketController {
 	}
 	
 	@GetMapping("/{ticketId}")
-	public ResponseEntity<Ticket> find(@PathVariable Long ticketId) {
-		Optional<Ticket> ticket = ticketRepository.findById(ticketId);
-		
-		if (ticket.isPresent()) {
-			return ResponseEntity.ok(ticket.get());
-		}
-		
-		return ResponseEntity.notFound().build();
+	public Ticket find(@PathVariable Long ticketId) {
+		return ticketRepository.findById(ticketId).orElseThrow(
+			() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found with id: " + ticketId)
+		);
 	}
 	
 	@PostMapping
