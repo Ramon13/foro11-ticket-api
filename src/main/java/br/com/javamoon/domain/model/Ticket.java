@@ -15,6 +15,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class Ticket {
@@ -23,6 +26,7 @@ public class Ticket {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank
 	private String title;
 	
 	@Column(name = "created_at")
@@ -31,6 +35,7 @@ public class Ticket {
 	@Embedded
 	private TicketStatus status;
 
+	@Valid
 	@Embedded
 	private TicketPriority priority;
 	
@@ -38,9 +43,13 @@ public class Ticket {
 	@JoinColumn(name = "created_by", nullable = false)
 	private User createdBy;
 	
+	@Valid
+	@NotEmpty
 	@OneToMany(mappedBy = "ticket")
 	private List<Comment> comments;
 	
+	@Valid
+	@NotEmpty
 	@ManyToMany
 	@JoinTable(
 	    name = "ticket_has_tag",

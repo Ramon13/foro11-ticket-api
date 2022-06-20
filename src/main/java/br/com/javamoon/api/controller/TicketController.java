@@ -1,11 +1,11 @@
 package br.com.javamoon.api.controller;
 
 import java.util.List;
-import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,13 +39,16 @@ public class TicketController {
 	@GetMapping("/{ticketId}")
 	public Ticket find(@PathVariable Long ticketId) {
 		return ticketRepository.findById(ticketId).orElseThrow(
-			() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found with id: " + ticketId)
+			() -> new ResponseStatusException(
+						HttpStatus.NOT_FOUND, 
+						"Ticket not found with id: " + ticketId
+					)
 		);
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Ticket add(@RequestBody Ticket ticket) {
+	public Ticket add(@RequestBody @Valid Ticket ticket) {
 		return ticketRegisterService.save(ticket);
 	}
 }

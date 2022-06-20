@@ -2,12 +2,14 @@ package br.com.javamoon.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 import br.com.javamoon.domain.enumeration.TicketPriorityDescription;
 
 @Embeddable
 public class TicketPriority {
 
+	@NotNull
 	@Column(name = "ticket_priority")
 	private Character name;
 

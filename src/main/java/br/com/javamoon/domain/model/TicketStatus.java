@@ -2,6 +2,7 @@ package br.com.javamoon.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
 
 import br.com.javamoon.domain.enumeration.TicketStatusDescription;
 
