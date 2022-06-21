@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,6 +23,7 @@ public class Comment {
 	private Long id;
 	
 	@NotBlank
+	@Size(min = 1, max = 1000 * 10)
 	private String message;
 	
 	@Column(name = "created_at")
