@@ -1,12 +1,14 @@
 package br.com.javamoon.domain.service;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.javamoon.domain.enumeration.TicketStatusDescription;
+import br.com.javamoon.domain.model.Comment;
 import br.com.javamoon.domain.model.Ticket;
 import br.com.javamoon.domain.model.TicketStatus;
 import br.com.javamoon.domain.model.User;
@@ -26,25 +28,31 @@ public class TicketRegisterService {
 	@Autowired
 	private CommentRepository commentRepository;
 	
+	private final TicketStatus PENDING = TicketStatus.fromStatus(TicketStatusDescription.P); 
 	
 	@Transactional
 	public Ticket save(Ticket ticket) {
-		ticket.setStatus(TicketStatus.fromStatus(TicketStatusDescription.P));
-		ticket.setCreatedBy(getLoggedUser());
+		User loggedUser = getLoggedUser();
+		
+		ticket.setStatus(PENDING);
+		ticket.setCreatedBy(loggedUser);
 		ticket.setCreatedAt(OffsetDateTime.now());
 		
 		ticketRepository.save(ticket);
-		
-		ticket.getComments().forEach(comment -> {
-			comment.setCreatedBy(getLoggedUser());
-			comment.setCreatedAt(OffsetDateTime.now());
-			comment.setTicket(ticket);
-			commentRepository.save(comment);
-		});
-		
-		System.out.println(ticket);
+		saveComments(ticket.getComments(), loggedUser, ticket);
 		
 		return ticket;
+	}
+	
+	@Transactional
+	private void saveComments(List<Comment> comments, User author, Ticket ticket) {
+		for (Comment comment : comments) {
+			comment.setCreatedBy(author);
+			comment.setCreatedAt( OffsetDateTime.now() );
+			comment.setTicket(ticket);
+			
+			commentRepository.save(comment);
+		}
 	}
 	
 	/**
