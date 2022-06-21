@@ -4,12 +4,14 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
+import br.com.javamoon.core.validation.Priority;
 import br.com.javamoon.domain.enumeration.TicketPriorityDescription;
 
 @Embeddable
 public class TicketPriority {
 
 	@NotNull
+	@Priority
 	@Column(name = "ticket_priority")
 	private Character name;
 
