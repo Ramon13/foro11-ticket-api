@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -20,6 +21,8 @@ import br.com.javamoon.api.exception.Problem.Field;
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 
+	private final String RESOURCE_NOT_FOUND = "Recurso não encontrado.";
+	
 	@Autowired
 	private MessageSource messageSource;
 	
@@ -39,7 +42,29 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 			})
 			.collect(Collectors.toList());
 		
-		Problem problem = new Problem(status.value(), problemFields);
+		Problem problem = Problem.newBuilder()
+			.status(status.value())
+			.fields(problemFields)
+			.build();
+		
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}
+	
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<?> handleResourceNotFound(ResourceNotFoundException ex,
+			WebRequest request) {
+		
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		String title = RESOURCE_NOT_FOUND;
+		String detail = ex.getMessage();
+		
+		Problem problem = Problem.newBuilder()
+			.status(status.value())
+			.title(title)
+			.detail(detail)
+			.build();
+		
+		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+	}
+	
 }

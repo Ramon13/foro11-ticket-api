@@ -1,12 +1,16 @@
 package br.com.javamoon.domain.model;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,10 +19,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+
+import br.com.javamoon.domain.enumeration.TicketPriority;
+import br.com.javamoon.domain.enumeration.TicketStatus;
 
 @Entity
 public class Ticket {
@@ -27,41 +30,45 @@ public class Ticket {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
 	private String title;
 	
 	@Column(name = "created_at")
 	private OffsetDateTime createdAt;
 	
-	@Embedded
-	private TicketStatus status;
+	@Enumerated(EnumType.STRING)
+	private TicketStatus status = TicketStatus.PENDING;
 
-	@Valid
-	@Embedded
+	@Enumerated(EnumType.STRING)
 	private TicketPriority priority;
 	
 	@ManyToOne
 	@JoinColumn(name = "created_by", nullable = false)
 	private User createdBy;
 	
-	@Valid
-	@NotEmpty
-	@Size(min = 1, max = 1)
 	@OneToMany(mappedBy = "ticket")
-	private List<Comment> comments;
+	private List<Comment> comments = new ArrayList<>();
 	
-	@Valid
-	@NotEmpty
 	@ManyToMany
 	@JoinTable(
 	    name = "ticket_has_tag",
 	    joinColumns = @JoinColumn(name = "ticket_id"),
 	    inverseJoinColumns = @JoinColumn(name = "tag_id")
 	)
-	private List<Tag> tags;
+	private Set<Tag> tags = new HashSet<>();
 	
 	public Ticket() {}
 	
+	public void toPendingStatus() {
+		this.status = TicketStatus.PENDING;
+	}
+	
+	public void toClosedStatus() {
+		this.status = TicketStatus.CLOSED;
+	}
+	
+	public void toNotListedStatus() {
+		this.status = TicketStatus.NOT_LISTED;
+	}
 	
 	public Long getId() {
 		return id;
@@ -119,11 +126,11 @@ public class Ticket {
 		this.comments = comments;
 	}
 	
-	public List<Tag> getTags() {
+	public Set<Tag> getTags() {
 		return tags;
 	}
 	
-	public void setTags(List<Tag> tags) {
+	public void setTags(Set<Tag> tags) {
 		this.tags = tags;
 	}
 

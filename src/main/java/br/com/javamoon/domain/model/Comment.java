@@ -10,10 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Comment {
@@ -22,8 +18,6 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
-	@Size(min = 1, max = 1000 * 10)
 	private String message;
 	
 	@Column(name = "created_at")
@@ -33,7 +27,6 @@ public class Comment {
 	@JoinColumn(name = "created_by", nullable = false)
 	private User createdBy;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "ticket_id", nullable = false)
 	private Ticket ticket;

@@ -1,0 +1,16 @@
+{
+  "title": "%s",
+  "priority": {
+    "name": "N"
+  },
+  "comments": [
+    {
+      "message": "Foo bar, John doe 138"
+    }
+  ],
+  "tags": [
+    {
+      "id": 1
+    }
+  ]
+}

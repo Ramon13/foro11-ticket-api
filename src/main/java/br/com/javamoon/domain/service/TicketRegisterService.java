@@ -1,18 +1,19 @@
 package br.com.javamoon.domain.service;
 
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.javamoon.domain.enumeration.TicketStatusDescription;
+import br.com.javamoon.api.exception.ResourceNotFoundException;
+import br.com.javamoon.core.validation.CommentRegisterService;
 import br.com.javamoon.domain.model.Comment;
+import br.com.javamoon.domain.model.Tag;
 import br.com.javamoon.domain.model.Ticket;
-import br.com.javamoon.domain.model.TicketStatus;
 import br.com.javamoon.domain.model.User;
-import br.com.javamoon.domain.repository.CommentRepository;
+import br.com.javamoon.domain.repository.TagRepository;
 import br.com.javamoon.domain.repository.TicketRepository;
 import br.com.javamoon.domain.repository.UserRepository;
 
@@ -23,38 +24,50 @@ public class TicketRegisterService {
 	private TicketRepository ticketRepository;
 	
 	@Autowired
+	private TagRepository tagRepository;
+	
+	@Autowired
 	private UserRepository userRepository;
 	
 	@Autowired
-	private CommentRepository commentRepository;
-	
-	private final TicketStatus PENDING = TicketStatus.fromStatus(TicketStatusDescription.P); 
+	private CommentRegisterService commentRegisterService;
 	
 	@Transactional
 	public Ticket save(Ticket ticket) {
-		User loggedUser = getLoggedUser();
+		validateTags(ticket.getTags());
 		
-		ticket.setStatus(PENDING);
-		ticket.setCreatedBy(loggedUser);
+		ticket.setCreatedBy(getLoggedUser());
 		ticket.setCreatedAt(OffsetDateTime.now());
 		
-		ticketRepository.save(ticket);
-		saveComments(ticket.getComments(), loggedUser, ticket);
-		
-		return ticket;
+		return ticketRepository.save(ticket);
 	}
 	
 	@Transactional
-	private void saveComments(List<Comment> comments, User author, Ticket ticket) {
-		for (Comment comment : comments) {
-			comment.setCreatedBy(author);
-			comment.setCreatedAt( OffsetDateTime.now() );
-			comment.setTicket(ticket);
-			
-			commentRepository.save(comment);
-		}
+	public Comment saveComment(Long ticketId, Comment comment) {
+		Ticket ticket = findOrElseThrow(ticketId);
+		
+		comment.setCreatedBy(getLoggedUser());
+		comment.setTicket(ticket);
+		commentRegisterService.save(comment);
+		
+		return comment;
 	}
 	
+	public Ticket findOrElseThrow(Long ticketId) {
+		return ticketRepository.findById(ticketId)
+			.orElseThrow(() -> new ResourceNotFoundException("Ticket not found with id: " + ticketId));
+	}
+	
+	private void validateTags(Collection<Tag> tags) throws ResourceNotFoundException{
+		tags.stream().forEach(tag -> findTagOrElseThrow(tag.getId()));
+	}
+	
+	private Tag findTagOrElseThrow(Long tagId) {
+		return tagRepository.findById(tagId)
+			.orElseThrow(() -> new ResourceNotFoundException("Tag not found with id: " + tagId));
+	}
+	
+
 	/**
 	 * TODO: replace by a real user account in production
 	 * Mock a simple user. Development only

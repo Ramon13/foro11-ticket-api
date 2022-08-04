@@ -14,8 +14,8 @@ CREATE TABLE ticket (
   id BIGINT NOT NULL AUTO_INCREMENT,
   title VARCHAR(128) NOT NULL,
   created_at DATETIME NOT NULL,
-  ticket_status CHAR(1) NOT NULL,
-  ticket_priority CHAR(1) NOT NULL,
+  status VARCHAR(16) NOT NULL,
+  priority VARCHAR(16) NOT NULL,
   created_by BIGINT NOT NULL,
   PRIMARY KEY (id),
   CONSTRAINT fk_ticket_user FOREIGN KEY (created_by) REFERENCES user(id)
