@@ -15,6 +15,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 
 import br.com.javamoon.core.validation.TicketRepositoryQueries;
+import br.com.javamoon.domain.enumeration.TicketStatus;
 import br.com.javamoon.domain.model.Ticket;
 import br.com.javamoon.domain.repository.filter.TicketFilter;
 
@@ -34,12 +35,16 @@ public class TicketRepositoryImpl implements TicketRepositoryQueries{
 		
 		List<Predicate> predicates = new ArrayList<>();
 		
-		if (Objects.nonNull(ticketFilter.getId())) {
-			predicates.add(builder.equal(root.get("id"), ticketFilter.getId()));
+		if (Objects.nonNull(ticketFilter.getTitle())) {
+			predicates.add(builder.like(
+				builder.lower( root.get("title") ), 
+				"%" + ticketFilter.getTitle().toLowerCase() + "%"
+			));
 		}
 		
 		if (Objects.nonNull(ticketFilter.getStatus())) {
-			predicates.add(builder.equal(root.get("status"), ticketFilter.getStatus()));
+			TicketStatus status = TicketStatus.fromString(ticketFilter.getStatus());
+			predicates.add(builder.equal(root.get("status"), status));
 		}
 		
 		criteria.where(predicates.toArray(new Predicate[0]));
