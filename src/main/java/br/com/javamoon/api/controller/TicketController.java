@@ -42,7 +42,7 @@ public class TicketController {
 	private TicketDTOMapper ticketMapper;
 	
 	@GetMapping
-	public Collection<TicketDTO> list(TicketFilter filters) {
+	public Collection<TicketDTO> list(@Valid TicketFilter filters) {
 		List<Ticket> tickets = ticketRepository.filter(filters);
 		
 		return ticketMapper.toCollectionDTO(tickets);

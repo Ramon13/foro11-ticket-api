@@ -9,6 +9,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -33,7 +34,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		HttpStatus status,
 		WebRequest request
 	) {
-		BindingResult bindingResult = ex.getBindingResult();
+		return handleValidationInternal(ex, status, request, ex.getBindingResult());
+	}
+	
+	@Override
+	protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status,
+			WebRequest request) {
+
+		return handleValidationInternal(ex, status, request, ex.getBindingResult());
+	}
+
+	private ResponseEntity<Object> handleValidationInternal(Exception ex, HttpStatus status,
+			WebRequest request, BindingResult bindingResult) {
 		List<Field> problemFields = bindingResult.getFieldErrors().stream()
 			.map(fieldError -> {
 				return new Problem.Field(

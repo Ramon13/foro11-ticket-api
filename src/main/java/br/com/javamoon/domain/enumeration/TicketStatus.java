@@ -6,6 +6,6 @@ public enum TicketStatus {
 	NOT_LISTED;
 	
 	public static TicketStatus fromString(String status) {
-		return TicketStatus.valueOf(status);
+		return TicketStatus.valueOf(status.toUpperCase());
 	}
 }

@@ -15,6 +15,8 @@ public @interface Status {
 	
 	String message() default "Invalid ticket priority";
 	
+	boolean nullable();
+	
 	Class<?>[] groups() default { };
 	
 	Class<? extends Payload>[] payload() default { };
