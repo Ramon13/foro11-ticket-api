@@ -1,6 +1,7 @@
 package br.com.javamoon.api.model;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 public class CommentDTO {
 
@@ -8,6 +9,7 @@ public class CommentDTO {
 	private String message;
 	private OffsetDateTime createdAt;
 	private UserDTO createdBy;
+	private List<CommentImageDTO> images;
 	
 	public Long getId() {
 		return id;
@@ -32,6 +34,12 @@ public class CommentDTO {
 	}
 	public void setCreatedBy(UserDTO createdBy) {
 		this.createdBy = createdBy;
+	}
+	public List<CommentImageDTO> getImages() {
+		return images;
+	}
+	public void setImages(List<CommentImageDTO> images) {
+		this.images = images;
 	}
 	
 	@Override

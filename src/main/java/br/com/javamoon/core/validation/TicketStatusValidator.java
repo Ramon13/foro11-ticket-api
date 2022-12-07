@@ -9,13 +9,6 @@ import br.com.javamoon.domain.enumeration.TicketStatus;
 
 public class TicketStatusValidator implements ConstraintValidator<Status, String>{
 
-	private boolean nullable;
-	
-	@Override
-	public void initialize(Status constraintAnnotation) {
-		this.nullable = constraintAnnotation.nullable();
-	}
-	
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		if (Objects.nonNull(value)) {
@@ -27,8 +20,8 @@ public class TicketStatusValidator implements ConstraintValidator<Status, String
 				return false;
 			}
 		}
-		System.out.println(nullable);
-		return nullable;
+
+		return true;
 	}
 
 	public static boolean isValid(String status) {

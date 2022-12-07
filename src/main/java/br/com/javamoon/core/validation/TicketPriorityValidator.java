@@ -21,7 +21,7 @@ public class TicketPriorityValidator implements ConstraintValidator<Priority, St
 			}
 		}
 		
-		return false;
+		return true;
 	}
 
 }

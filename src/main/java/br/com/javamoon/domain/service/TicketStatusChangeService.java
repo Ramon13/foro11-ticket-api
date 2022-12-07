@@ -15,19 +15,19 @@ public class TicketStatusChangeService {
 	
 	@Transactional
 	public void updateToPending(Long ticketId) {
-		Ticket ticket = ticketRegisterService.findOrElseThrow(ticketId);
+		Ticket ticket = ticketRegisterService.findTicketOrElseThrow(ticketId);
 		ticket.toPendingStatus();
 	}
 	
 	@Transactional
 	public void updateToClosed(Long ticketId) {
-		Ticket ticket = ticketRegisterService.findOrElseThrow(ticketId);
+		Ticket ticket = ticketRegisterService.findTicketOrElseThrow(ticketId);
 		ticket.toClosedStatus();
 	}
 	
 	@Transactional
 	public void updateToNotListed(Long ticketId) {
-		Ticket ticket = ticketRegisterService.findOrElseThrow(ticketId);
+		Ticket ticket = ticketRegisterService.findTicketOrElseThrow(ticketId);
 		ticket.toNotListedStatus();
 	}
 }

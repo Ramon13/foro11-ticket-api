@@ -1,5 +1,6 @@
 package br.com.javamoon.domain.repository.filter;
 
+import br.com.javamoon.core.validation.Priority;
 import br.com.javamoon.core.validation.Status;
 
 public class TicketFilter {
@@ -8,8 +9,11 @@ public class TicketFilter {
 	
 	private String title;
 	
-	@Status(message = "{ticket.status.name.invalid}", nullable = true)
+	@Status(message = "{ticket.status.name.invalid}")
 	private String status;
+	
+	@Priority(message = "{ticket.priority.name.invalid}")
+	private String priority;
 	
 	public Long getId() {
 		return id;
@@ -33,5 +37,13 @@ public class TicketFilter {
 	
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	public String getPriority() {
+		return priority;
+	}
+	
+	public void setPriority(String priority) {
+		this.priority = priority;
 	}
 }

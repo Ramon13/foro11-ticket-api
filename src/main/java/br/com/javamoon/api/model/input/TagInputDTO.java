@@ -1,41 +1,19 @@
 package br.com.javamoon.api.model.input;
 
-import java.util.Objects;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 public class TagInputDTO {
 
-	@NotNull(message = "{tag.id.notnull}")
-    @Positive(message = "{tag.id.positive}")
-	private Long id;
-	
-	public Long getId() {
-		return id;
+	@NotBlank(message = "{tag.name.notblank}")
+    @Size(min = 3, max = 20, message = "{tag.name.size}")
+	private String name;
+
+	public String getName() {
+		return name;
 	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	@Override
-	public String toString() {
-		return "TagInputDTO [id=" + id + "]";
-	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TagInputDTO other = (TagInputDTO) obj;
-		return Objects.equals(id, other.id);
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

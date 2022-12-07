@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.javamoon.api.model.TicketDTO;
-import br.com.javamoon.api.model.input.TicketInputDTO;
+import br.com.javamoon.api.model.input.TicketMultipartInput;
 import br.com.javamoon.api.model.update.TicketUpdateDTO;
+import br.com.javamoon.domain.enumeration.TicketPriority;
+import br.com.javamoon.domain.model.Tag;
 import br.com.javamoon.domain.model.Ticket;
 
 @Component
@@ -30,9 +32,16 @@ public class TicketDTOMapper {
 		return modelMapper.map(ticket, TicketDTO.class);
 	}
 	
-	public Ticket toDomainObject(TicketInputDTO ticketInput) {
-		return modelMapper.map(ticketInput, Ticket.class);
-	}
+	public Ticket toDomainObject(TicketMultipartInput ticketInput) {
+		Ticket ticket = modelMapper.map(ticketInput, Ticket.class);
+		
+		ticket.setPriority(TicketPriority.fromString(ticketInput.getPriority()));
+		
+		ticketInput.getTagIds().stream()
+			.forEach( tagId -> ticket.getTags().add(new Tag(tagId)) );
+		
+		return ticket;
+	}	
 	
 	public void copyToDomainObject(TicketUpdateDTO ticketUpdate, Ticket ticket) {
 		ticket.setTags(new HashSet<>());

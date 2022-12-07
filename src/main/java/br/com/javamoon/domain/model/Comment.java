@@ -1,6 +1,8 @@
 package br.com.javamoon.domain.model;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -10,6 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 public class Comment {
@@ -20,6 +25,7 @@ public class Comment {
 	
 	private String message;
 	
+	@CreationTimestamp
 	@Column(name = "created_at")
 	private OffsetDateTime createdAt;
 
@@ -30,6 +36,9 @@ public class Comment {
 	@ManyToOne
 	@JoinColumn(name = "ticket_id", nullable = false)
 	private Ticket ticket;
+	
+	@OneToMany(mappedBy = "comment")
+	private List<CommentImage> images = new ArrayList<>();
 	
 	public Comment() {}
 	
@@ -66,8 +75,20 @@ public class Comment {
 		this.createdBy = createdBy;
 	}
 	
+	public Ticket getTicket() {
+		return ticket;
+	}
+	
 	public void setTicket(Ticket ticket) {
 		this.ticket = ticket;
+	}
+	
+	public List<CommentImage> getImages() {
+		return images;
+	}
+	
+	public void setImages(List<CommentImage> images) {
+		this.images = images;
 	}
 
 	@Override

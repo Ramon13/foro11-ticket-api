@@ -8,14 +8,16 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Target(ElementType.FIELD)
+@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {TicketStatusValidator.class})
-public @interface Status {
+@Constraint(validatedBy = { FileSizeValidator.class} )
+public @interface FileSize {
+
+	String message() default "invalid file size";
 	
-	String message() default "Invalid ticket priority";
+	Class<?>[] groups() default {};
 	
-	Class<?>[] groups() default { };
+	Class<? extends Payload>[] payload() default {};
 	
-	Class<? extends Payload>[] payload() default { };
+	String max();
 }

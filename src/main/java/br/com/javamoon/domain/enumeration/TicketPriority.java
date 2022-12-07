@@ -6,6 +6,6 @@ public enum TicketPriority {
 	LOW;
 	
 	public static TicketPriority fromString(String priority) {
-		return TicketPriority.valueOf(priority);
+		return TicketPriority.valueOf(priority.toUpperCase());
 	}
 }

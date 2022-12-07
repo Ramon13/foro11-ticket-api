@@ -6,46 +6,37 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import org.hibernate.validator.constraints.Length;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Tag {
+public class CommentImage extends Image {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Length(min = 2, max = 32)
-	private String name;
-
-	public Tag() {}
-	
-	public Tag(Long id) {
-		this.id = id;
-	}
+	@ManyToOne
+	@JoinColumn(name = "comment_id", nullable = false)
+	private Comment comment;
 	
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public String getName() {
-		return name;
+	public Comment getComment() {
+		return comment;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setComment(Comment comment) {
+		this.comment = comment;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -54,12 +45,7 @@ public class Tag {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Tag other = (Tag) obj;
+		CommentImage other = (CommentImage) obj;
 		return Objects.equals(id, other.id);
-	}
-
-	@Override
-	public String toString() {
-		return "Tag [id=" + id + ", name=" + name + "]";
 	}
 }

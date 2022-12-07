@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +20,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import br.com.javamoon.domain.enumeration.TicketPriority;
 import br.com.javamoon.domain.enumeration.TicketStatus;
@@ -32,6 +35,7 @@ public class Ticket {
 	
 	private String title;
 	
+	@CreationTimestamp
 	@Column(name = "created_at")
 	private OffsetDateTime createdAt;
 	
@@ -48,7 +52,7 @@ public class Ticket {
 	@OneToMany(mappedBy = "ticket")
 	private List<Comment> comments = new ArrayList<>();
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 	    name = "ticket_has_tag",
 	    joinColumns = @JoinColumn(name = "ticket_id"),
@@ -150,7 +154,6 @@ public class Ticket {
 		Ticket other = (Ticket) obj;
 		return Objects.equals(id, other.id);
 	}
-
 
 	@Override
 	public String toString() {
