@@ -18,7 +18,7 @@
 	<description>A simple api for manage support tickets</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>18</java.version>
 		<model-mapper.version>3.0.0</model-mapper.version>
 	</properties>
 
