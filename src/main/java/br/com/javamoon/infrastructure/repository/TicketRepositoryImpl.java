@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import br.com.javamoon.domain.enumeration.TicketPriority;
 import br.com.javamoon.domain.enumeration.TicketStatus;
 import br.com.javamoon.domain.model.Ticket;
 import br.com.javamoon.domain.repository.TicketRepositoryQueries;
@@ -78,7 +79,8 @@ public class TicketRepositoryImpl implements TicketRepositoryQueries{
 		}
 		
 		if (Objects.nonNull(ticketFilter.getPriority())) {
-			predicates.add(builder.equal(root.get("priority"), ticketFilter.getPriority()	));
+			TicketPriority priority = TicketPriority.fromString(ticketFilter.getPriority());
+			predicates.add(builder.equal(root.get("priority"), priority));
 		}
 		
 		criteria.where(predicates.toArray(new Predicate[0]));

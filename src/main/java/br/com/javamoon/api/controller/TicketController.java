@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +54,7 @@ public class TicketController {
 	private TicketDTOMapper ticketMapper;
 	
 	@GetMapping
-	public Page<TicketDTO> list(@Valid TicketFilter filters, Pageable pageable) {
+	public Page<TicketDTO> list(@Valid TicketFilter filters, @PageableDefault(size = 7) Pageable pageable) {
 		Page<Ticket> ticketsPage = ticketRepository.filter(filters, pageable);
 		
 		Collection<TicketDTO> ticketsDTO = ticketMapper.toCollectionDTO(ticketsPage.getContent());
