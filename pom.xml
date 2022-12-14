@@ -13,7 +13,7 @@
 	<groupId>br.com.javamoon</groupId>
 	<artifactId>foro11-tickets-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>foro11-tickets-api</name>
 	<description>A simple api for manage support tickets</description>
 
